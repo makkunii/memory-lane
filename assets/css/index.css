@@ -45,7 +45,7 @@ body {
 
 #distant-mountains {
  height: calc(100% - 130px); /* 🌟 Adjusted height */
- bottom: 130px; /* 🌟 Adjusted position */
+ bottom: 100px; /* 🌟 Adjusted position */
  /* Subtle change to mountain color */
  background-image: linear-gradient(to top, var(--synth-violet) 30%, transparent 30%),
      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300"><path fill="%234d3b6a" d="M0 300L100 200L250 250L400 150L550 220L700 180L800 300Z" /></svg>');
@@ -97,11 +97,73 @@ body {
 
 /* PLAYER & MEMORY SPOT - FINAL POSITION ADJUSTMENT */
 #player {
- width: 40px; height: 40px; background: linear-gradient(135deg, var(--neon-pink) 0%, #ff4fbf 100%); border: 3px solid #d43a99; position: absolute; bottom: 130px; left: 750px; z-index: 20; /* 🌟 Adjusted to 130px */
- /* Player Glow */
- box-shadow: 0 4px 0 #b02d7f, inset 0 0 8px rgba(255,255,255,0.6), 0 0 15px var(--neon-pink);
- border-radius: 4px;
+  position: absolute;
+  width: 46px;      /* body width */
+  height: 48px;     /* body height */
+  pointer-events: none; /* so player doesn't block clicks */
+  z-index: 10;
 }
+
+/* Dragon Head */
+#player-head {
+  position: absolute;
+  top: -24px;       /* above the body */
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  z-index: 12;
+}
+
+/* Dragon Body */
+.dragon-body {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #4B0082, #6A0DAD); /* dark purple gradient */
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 11;
+}
+
+/* Dragon Tail */
+.dragon-tail {
+  width: 20px;
+  height: 10px;
+  background: #6A0DAD;
+  position: absolute;
+  top: 20px;
+  left: -18px;
+  border-radius: 4px;
+  transform: rotate(-30deg);
+  z-index: 10;
+}
+
+/* Dragon Wings */
+.dragon-wing {
+  width: 30px;
+  height: 20px;
+  background: rgba(138,43,226,0.7); /* semi-transparent purple */
+  position: absolute;
+  top: 10px;
+  border-radius: 50% 50% 0 0;
+  transform-origin: bottom center;
+  z-index: 9;
+}
+
+.left-wing {
+  left: -18px;
+  transform: rotate(-20deg);
+}
+
+.right-wing {
+  right: -18px;
+  transform: rotate(20deg);
+}
+
 .memory-spot {
  width: 40px; height: 40px; background: linear-gradient(135deg, var(--neon-pink) 0%, #ff1493 100%);
  /* Changed border to Electric Cyan */
@@ -279,4 +341,23 @@ body {
     0% { opacity: 0.8; }
     50% { opacity: 0.2; }
     100% { opacity: 0.8; }
+}
+
+
+@keyframes flap {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(-45deg); }
+}
+
+.left-wing {
+  animation: flap 0.5s infinite ease-in-out;
+}
+
+@keyframes flap-right {
+  0%, 100% { transform: rotate(20deg); }
+  50% { transform: rotate(45deg); }
+}
+
+.right-wing {
+  animation: flap-right 0.5s infinite ease-in-out;
 }
