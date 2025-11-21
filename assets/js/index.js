@@ -122,7 +122,7 @@ function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
 
 // 🏃‍♀️ SPRITE DEFINITIONS
 // IMPORTANT: Update these paths to match where your files are actually located!
-const IDLE_SPRITE = './assets/images/mjay_standing_side_view.png'; 
+const IDLE_SPRITE = './assets/images/mjay.png'; 
 const WALK_SPRITE_1 = './assets/images/mjay_walking_side_view.png'; 
 // Since you only provided one walk sprite, we will use the standing one as the second frame.
 const WALK_SPRITE_2 = './assets/images/mjay_standing_side_view.png'; 
