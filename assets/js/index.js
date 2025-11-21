@@ -49,6 +49,15 @@ const GAME_DATA = {
 };
 // ----------------------------------------------------
 
+function isCollision(a, b) {
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + b.height > b.y
+  );
+}
+
 
 // --- DOM Element Setup (Dynamically generated) ---
 const gameContainer = document.getElementById('game-container');
@@ -91,6 +100,7 @@ initializeWorldElements();
 
 // --- Player & Physics ---
 const player=document.getElementById('player');
+const mjayPixel=document.getElementById('mjay-pixel'); // Get the image element for sprite swapping
 const gameWidth=8000;
 const playerWidth=46;
 let px=750, py=groundHeight, vx=0, vy=0; // Start player at left: 750px
@@ -99,6 +109,7 @@ let isJumping=false, isModalOpen=false;
 
 let canTriggerMemory = true;
 let endingTriggered = false;
+
 
 // Re-read platforms dynamically after they're created
 const platforms=[];
@@ -109,23 +120,81 @@ platforms.push({el, left:parseInt(el.style.left), bottom:parseInt(el.style.botto
 
 function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
 
+// 🏃‍♀️ SPRITE DEFINITIONS
+// IMPORTANT: Update these paths to match where your files are actually located!
+const IDLE_SPRITE = './assets/images/mjay_standing_side_view.png'; 
+const WALK_SPRITE_1 = './assets/images/mjay_walking_side_view.png'; 
+// Since you only provided one walk sprite, we will use the standing one as the second frame.
+const WALK_SPRITE_2 = './assets/images/mjay_standing_side_view.png'; 
+
+
+let walkFrame = 0;
+const WALK_CYCLE_INTERVAL = 150; // Milliseconds per frame swap
+let lastWalkTime = 0;
+
+function updateWalkAnimation(timestamp) {
+    // Check if the player is moving horizontally
+    const isMoving = Math.abs(vx) > 0.5 && !isModalOpen && !isJumping;
+
+    if (isMoving) {
+        player.classList.add('is-walking');
+
+        // Check direction and flip sprite
+        if (vx < -0.5) {
+            player.style.transform = 'scaleX(-1)'; // Flip horizontally for left movement
+        } else if (vx > 0.5) {
+            player.style.transform = 'scaleX(1)'; // Default for right movement
+        }
+        
+        // Sprite Swapping Logic
+        if (timestamp - lastWalkTime > WALK_CYCLE_INTERVAL) {
+            walkFrame = 1 - walkFrame; // Toggle between 0 and 1
+            lastWalkTime = timestamp;
+            
+            if (walkFrame === 0) {
+                mjayPixel.src = WALK_SPRITE_1; // Step 1: Walking sprite
+            } else {
+                mjayPixel.src = WALK_SPRITE_2; // Step 2: Standing sprite (or the second walk frame if you had one)
+            }
+        }
+
+    } else {
+        // Player is idle
+        player.classList.remove('is-walking');
+        mjayPixel.src = IDLE_SPRITE;
+        walkFrame = 0; // Reset walk frame
+    }
+    
+    // Check for jumping and add/remove class
+    if (isJumping) {
+        player.classList.add('is-jumping');
+        mjayPixel.src = IDLE_SPRITE; // Show idle or a jump sprite when mid-air
+    } else {
+        player.classList.remove('is-jumping');
+    }
+}
+
+
 // --- Game Loop (Physics Always Runs) ---
-function updateGame(){
+function updateGame(timestamp){
 // Physics always runs, even when modal is open.
 px+=vx; vx*=0.85; px=clamp(px,20,gameWidth-playerWidth-10);
 vy-=gravity; py=clamp(py+vy,groundHeight,1000);
 
-let restingY=groundHeight, onPlatform=false;
-platforms.forEach(p=>{
- const platformTopY=p.bottom+p.height;
- const isOverlapX=px<(p.left+p.width) && (px+playerWidth)>p.left;
- if(isOverlapX && py>=p.bottom && py<platformTopY && vy<0){
- restingY=platformTopY; onPlatform=true; vy=0; py=restingY;
- }
+let restingY = groundHeight, onPlatform = false;
+platforms.forEach(p => {
+    const platformTopY = p.bottom + p.height;
+    const isOverlapX = px < (p.left + p.width) && (px + playerWidth) > p.left;
+    if (isOverlapX && py >= p.bottom && py < platformTopY && vy <= 0) {
+        restingY = platformTopY;
+        onPlatform = true;
+        vy = 0;
+        py = restingY;
+    }
 });
 
 if(py<=groundHeight && vy<=0 && !onPlatform){ vy=0; py=groundHeight; }
-isJumping=py>groundHeight;
+isJumping = !onPlatform && py > groundHeight;
 player.style.left=px+'px'; player.style.bottom=py+'px';
 window.scrollTo({left:px-window.innerWidth/2+playerWidth/2, behavior:'auto'});
 
@@ -134,22 +203,27 @@ window.scrollTo({left:px-window.innerWidth/2+playerWidth/2, behavior:'auto'});
  document.getElementById('distant-mountains').style.backgroundPositionX = `${-scrollOffset * 0.1}px`;
  document.getElementById('close-clouds').style.backgroundPositionX = `${-scrollOffset * 0.3}px`;
 
+updateWalkAnimation(timestamp); // 🏃‍♀️ Update the walk animation class here
 checkMemoryTriggers();
 checkEndingTrigger();
 
 requestAnimationFrame(updateGame);
 }
-updateGame();
+// Start the game loop with the timestamp argument
+requestAnimationFrame(updateGame);
 
 // 💖 ENDING TRIGGER FUNCTION
 const endingModal = document.getElementById('ending-modal');
 const closeEndingBtn = document.getElementById('close-ending');
+
+const makkuniiEl = document.getElementById('makkunii-pixel');
 
 function checkEndingTrigger() {
  if (px > 7800 && !endingTriggered && !isModalOpen) {
   openEndingModal();
  }
 }
+
 
 function openEndingModal() {
  isModalOpen = true;
