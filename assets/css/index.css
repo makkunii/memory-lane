@@ -1,0 +1,282 @@
+:root {
+ --deep-indigo: #0A0E27;
+ --synth-violet: #2d1b4e;
+ --neon-pink: #FF1493;
+ --electric-cyan: #00FFFF;
+ --ground-teal: #7c4c92;
+ --ground-dark: #5e3b71;
+ --platform-color: #4a6fa5;
+ --platform-dark: #304e6c;
+}
+
+body {
+ margin: 0;
+ overflow-x: hidden; 
+ overflow-y: hidden;
+ background: var(--deep-indigo);
+ font-family: 'Press Start 2P', monospace, sans-serif;
+ color: #fff;
+}
+/* WORLD */
+#game-container {
+ position: relative;
+ width: 100vw;
+ min-width: 8000px;
+ height: 100vh;
+ /* Enhanced Gradient: Deep indigo to neon-like pinkish violet */
+ background: linear-gradient(180deg, var(--deep-indigo) 0%, var(--synth-violet) 40%, #803d8d 70%, #904d9c 100%);
+ display: flex;
+ align-items: flex-end;
+ image-rendering: pixelated;
+}
+
+/* ---------------------------------- */
+/* PARALLAX LAYERS - FINAL HEIGHT ADJUSTMENT */
+/* ---------------------------------- */
+.parallax-layer {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 8000px; /* Correct */
+ height: 100%;
+ pointer-events: none;
+ background-repeat: repeat-x;
+}
+
+#distant-mountains {
+ height: calc(100% - 130px); /* 🌟 Adjusted height */
+ bottom: 130px; /* 🌟 Adjusted position */
+ /* Subtle change to mountain color */
+ background-image: linear-gradient(to top, var(--synth-violet) 30%, transparent 30%),
+     url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300"><path fill="%234d3b6a" d="M0 300L100 200L250 250L400 150L550 220L700 180L800 300Z" /></svg>');
+ background-size: 800px 300px;
+ background-position: 0% 100%;
+ z-index: 5;
+}
+
+#close-clouds {
+ height: 300px;
+ background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><path fill="%23a093c4" d="M0 60C20 40, 40 40, 60 60, 80 80, 100 80, 120 60, 140 40, 160 40, 180 60, 200 60L200 100L0 100Z" /></svg>');
+ background-size: 400px 200px;
+ background-position: 0% 10%;
+ opacity: 0.3; /* Reduced opacity */
+ z-index: 6;
+}
+
+/* TERRAIN - The ground layer - FINAL HEIGHT ADJUSTMENT */
+#ground {
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ width: 8000px;
+ height: 130px; /* 🌟 Increased height to 130px */
+ background: repeating-linear-gradient(45deg, var(--ground-teal), var(--ground-teal) 10px, var(--ground-dark) 10px, var(--ground-dark) 20px);
+ /* Added Neon Glow to the top edge */
+ border-top: 5px solid var(--electric-cyan);
+ box-shadow: 0 -8px 0 rgba(0,0,0,0.4) inset,
+    0 0 10px var(--electric-cyan); /* Ground Glow */
+ z-index: 8;
+}
+
+/* PLATFORMS */
+.platform {
+ position: absolute;
+ width: 200px;
+ height: 20px;
+ background: var(--platform-color);
+ border: 3px solid var(--platform-dark);
+ box-shadow:
+  0 4px 0 var(--platform-dark),
+  inset 0 2px 0 rgba(255,255,255,0.4),
+  inset -2px 0 0 #5f80b9,
+  0 0 10px rgba(74, 111, 165, 0.8); /* Platform Glow */
+ z-index: 10;
+ border-radius: 2px;
+ image-rendering: pixelated;
+}
+
+/* PLAYER & MEMORY SPOT - FINAL POSITION ADJUSTMENT */
+#player {
+ width: 40px; height: 40px; background: linear-gradient(135deg, var(--neon-pink) 0%, #ff4fbf 100%); border: 3px solid #d43a99; position: absolute; bottom: 130px; left: 750px; z-index: 20; /* 🌟 Adjusted to 130px */
+ /* Player Glow */
+ box-shadow: 0 4px 0 #b02d7f, inset 0 0 8px rgba(255,255,255,0.6), 0 0 15px var(--neon-pink);
+ border-radius: 4px;
+}
+.memory-spot {
+ width: 40px; height: 40px; background: linear-gradient(135deg, var(--neon-pink) 0%, #ff1493 100%);
+ /* Changed border to Electric Cyan */
+ border: 4px solid var(--electric-cyan);
+ position: absolute; bottom: 140px; animation: memory-float 2s ease-in-out infinite; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 15; /* 🌟 Adjusted to 140px */
+ /* Enhanced Memory Glow */
+ box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 40px var(--neon-pink);
+}
+.memory-spot:after{
+ content:'❤️'; color:#fff; font-size:20px; line-height:1; font-weight:bold; animation: heart-beat 1s ease-in-out infinite;
+}
+
+.modal-description {
+    font-size: 12px;
+}
+
+/* Modal Blur Effect (Applied to game container when modal is open) */
+#game-container.blurred {
+ filter: blur(4px);
+ transition: filter 0.3s ease;
+}
+
+/* MODALS - Holographic/CRT Style */
+.modal {
+ position: fixed;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%,-50%) scale(1);
+ width: 400px;
+ max-width: calc(100vw - 40px);
+ max-height: calc(100vh - 120px);
+ overflow-y: auto;
+ /* Holographic/CRT Colors */
+ background: rgba(10, 0, 50, 0.9); /* Semi-transparent dark background */
+ padding: 24px;
+ border-radius: 0;
+ /* Neon Border and Shadow */
+ box-shadow: 0 0 10px var(--electric-cyan), 0 0 20px var(--neon-pink);
+ border: 4px solid var(--electric-cyan);
+ color: #fff;
+ display: none;
+ z-index: 9999;
+ font-family: 'IBM Plex Mono', monospace; /* More readable body text */
+ transition: transform 0.1s ease-out;
+}
+.modal.show{ display:block; }
+.modal img{ width:100%; height:auto; border-radius: 0; margin-bottom: 12px; border: 3px solid var(--neon-pink); }
+.modal h3 {
+ /* Neon Title */
+ text-align: center; border-bottom: 2px solid var(--neon-pink); padding-bottom: 8px; margin-top: 0; margin-bottom: 16px; font-size: 1.2em;
+ color: var(--electric-cyan);
+ text-shadow: 0 0 5px var(--electric-cyan);
+}
+
+/* BUTTONS */
+.btn{
+ /* Neon Pink Button Style */
+ background:var(--neon-pink); color:#fff; border:4px solid var(--electric-cyan); padding: 8px 16px; border-radius: 0; cursor: pointer;
+ box-shadow: 4px 4px 0 var(--electric-cyan); transition: all 0.05s ease-out; font-family: 'Press Start 2P', monospace; text-transform: uppercase; text-align: center;
+}
+.btn:hover{ background:#ff4fa3; }
+.btn:active{
+ transform: translate(2px, 2px);
+ box-shadow: 2px 2px 0 var(--electric-cyan);
+}
+#stop-btn:hover { background: #d00 !important; }
+
+/* ALPHABET LIST & GALLERY MODAL */
+#alphabet-list, #polaroid-collage-container {
+ max-height: 350px;
+ overflow-y: auto;
+}
+#alphabet-list {
+ display: flex; flex-wrap: wrap; justify-content: space-around;
+ padding: 10px; background: rgba(0,0,0,0.5); border: 2px solid var(--electric-cyan);
+}
+.alpha-letter { width: 45%; margin-bottom: 10px; }
+.alpha-letter h4 { margin: 0 0 5px 0; color: var(--neon-pink); font-size: 1em; text-shadow: 0 0 3px var(--neon-pink); }
+.alpha-letter ul { list-style-type: '★ '; padding-left: 1.5em; margin: 0; font-size: 0.9em; font-family: 'IBM Plex Mono', monospace; }
+
+#polaroid-collage-container {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ align-items: flex-start;
+ gap: 15px;
+ padding: 15px;
+ background: rgba(0,0,0,0.7);
+ border: 4px solid var(--neon-pink);
+ box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+/* Individual Polaroid Image Style */
+.polaroid-image {
+ background: #fff;
+ padding: 8px 8px 25px 8px;
+ border: 2px solid #000;
+ box-shadow: 5px 5px 0px rgba(0,0,0,0.4), 0 0 10px rgba(255,255,255,0.2);
+ position: relative;
+ transform: rotate(var(--rotation));
+ transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+ cursor: pointer;
+ image-rendering: pixelated;
+ max-width: 150px;
+ flex-shrink: 0;
+}
+.polaroid-image:hover {
+ transform: rotate(0deg) scale(1.1); /* Increased hover scale */
+ box-shadow: 8px 8px 0px rgba(0,0,0,0.6), 0 0 25px var(--electric-cyan); /* Neon hover glow */
+ z-index: 1;
+}
+.polaroid-image img {
+ display: block; width: 100%; height: auto; border: 1px solid #aaa; margin-bottom: 5px;
+}
+.polaroid-image .caption {
+ position: absolute; bottom: 5px; left: 0; width: 100%; text-align: center; font-size: 0.7em; color: #333; font-family: 'Press Start 2P', monospace;
+ white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* HINT/CONTROLS - Themed as SYSTEM LOG */
+.hint {
+ position: fixed; left: 12px; top: 12px; color: var(--electric-cyan);
+ background: rgba(0,0,0,0.9); padding: 8px 12px;
+ border-radius: 0; border: 2px solid var(--electric-cyan); font-size: 12px; z-index: 1000;
+ box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 10px var(--electric-cyan);
+ text-shadow: 0 0 5px var(--electric-cyan);
+}
+.hint::before {
+  content: 'CONTROLS: ';
+  color: var(--neon-pink);
+}
+
+/* Mobile Controls */
+#mobile-controls { position:fixed; bottom:20px; right: 20px; display:flex; gap:20px; align-items:center; z-index:999; }
+#joystick-container { width:80px; height:80px; border:4px solid var(--electric-cyan); border-radius:50%; background:rgba(255,255,255,0.1); position:relative; touch-action:none; transition: opacity 0.2s; }
+#joystick-container.active { opacity: 1.0; } /* Fully visible when active */
+#joystick-container:not(.active) { opacity: 0.5; } /* Semi-transparent when idle */
+#joystick-thumb { width:50px; height:50px; background:var(--neon-pink); border:4px solid var(--electric-cyan); border-radius:50%; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); box-shadow: 0 0 10px var(--neon-pink); }
+/* Increased Jump Button Size and moved to left side for better UX */
+#jump-btn { position: fixed; bottom: 20px; left: 20px; width:70px; height:70px; border-radius:12px; background:var(--neon-pink); border:4px solid var(--electric-cyan); font-size:30px; color:#fff; text-align:center; line-height:70px; user-select:none; box-shadow: 4px 4px 0 var(--electric-cyan); }
+#jump-btn:active { background:#e04090; box-shadow: 2px 2px 0 var(--electric-cyan); }
+
+
+/* Media query adjustment for smaller screens */
+@media (max-width:480px){
+ .modal { width: 90%; padding: 15px; }
+ #polaroid-collage-container, #alphabet-list { max-height: 350px; }
+ #polaroid-collage-container { gap: 10px; padding: 10px; }
+ .polaroid-image { max-width: 100px; padding: 5px 5px 20px 5px; }
+ .polaroid-image .caption { font-size: 0.6em; }
+ .hint { font-size: 10px; }
+ .alpha-letter { width: 100%; }
+ #mobile-controls { right: 10px; }
+ #jump-btn { left: 10px; }
+}
+
+/* ---------------------------------- */
+/* KEYFRAME ANIMATIONS (Ensure these are present) */
+/* ---------------------------------- */
+
+@keyframes memory-float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes heart-beat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.1); }
+    30% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.2; }
+    100% { opacity: 0.8; }
+}
