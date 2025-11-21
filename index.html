@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+<link rel="stylesheet" href="./assets/css/index.css">
+<title>Memory Lane - Final</title>
+</head>
+<body>
+<div class="hint">Use joystick or A/D/← → to move • Spacebar/↑/W to jump</div>
+<div id="game-container">
+ <div id="star-field" class="parallax-layer"></div>
+ <div id="distant-mountains" class="parallax-layer"></div>
+ <div id="close-clouds" class="parallax-layer"></div>
+ <div id="player" aria-hidden="true"></div>
+<div id="ground"></div>
+
+</div>
+
+<div id="memory-modal" class="modal">
+<h3 id="memory-title"></h3>
+<img id="memory-img" src="" alt="" style="display:none" />
+<div id="memory-text"></div>
+<p class="modal-description"></p>
+
+<div id="audio-player-container" style="display:none; margin-top:15px; padding:10px; background:#000; border:4px solid #333;">
+ <audio id="memory-audio" style="display:none;"></audio>
+ <div id="player-controls" style="display:flex; justify-content:space-between; align-items:center;">
+ <button id="play-btn" class="btn" style="width:45%; margin-top:0;">▶ Play</button>
+ <button id="stop-btn" class="btn" style="width:45%; margin-top:0; background:#f00; border-color:#900;">■ Stop</button>
+ </div>
+ <div id="player-status" style="margin-top:10px; padding:5px; background:#222; border:2px solid #000; color:#0f0; font-size:14px; text-align:center;">
+ <span id="player-time">0:00 / 0:00</span>
+ </div>
+</div>
+
+<button id="close-memory" class="btn" style="width:100%; margin-top:15px;">Close</button>
+</div>
+
+<div id="alphabet-modal" class="modal">
+<h3>Alphabet Dating List</h3>
+<p class="modal-description"></p>
+
+<div id="alphabet-list"></div>
+<button id="close-alpha" class="btn" style="width:100%; margin-top:15px;">Close</button>
+</div>
+
+<div id="gallery-modal" class="modal">
+<h3>Our Memories</h3>
+<p class="modal-description"></p>
+<div id="polaroid-collage-container" class="gallery">
+ </div>
+<button id="close-gallery" class="btn" style="width:100%;">Back</button>
+</div>
+
+<div id="ending-modal" class="modal">
+  <h3 id="ending-title" style="color:#ff1493; font-size: 1.5em;">You reached the end</h3>
+  <div id="ending-text" style="text-align:center; font-size: 1.1em; line-height: 1.5;">
+    <p>Congratulations!</p>
+    <p>You've reached the very end of our Memory Lane.</p>
+    <p>While the game world stops here, our real-life adventure is just beginning, this is just a tip of the iceberg of what could possibly happen.</p>
+    <p>I love you and look forward to building a world even bigger than this one, together.</p>
+    <p style="margin-top:20px;">~ makkunii <span style="font-size:1.5em;">❤️</span></p>
+  </div>
+  <button id="close-ending" class="btn" style="width:100%; margin-top:20px;">Return to the World</button>
+</div>
+
+
+<div id="mobile-controls">
+<div id="joystick-container"><div id="joystick-thumb"></div></div>
+<div id="jump-btn" class="control-btn">⬆</div>
+</div>
+
+<script src="./assets/js/index.js"></script>
+</body>
+</html>
