@@ -283,3 +283,22 @@ body {
   50% { opacity: 0.2; }
   100% { opacity: 0.8; }
 }
+
+/* Add this new section to your CSS file */
+.character-name {
+    position: absolute;
+    top: -20px; /* Adjust vertical position above the sprite */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Style for the name tag */
+    font-size: 10px; /* Small, readable pixel font size */
+    color: var(--electric-cyan); /* Neon color for visibility */
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 6px;
+    border: 1px solid var(--neon-pink);
+    border-radius: 2px;
+    white-space: nowrap;
+    z-index: 11;
+    text-shadow: 0 0 3px var(--electric-cyan);
+}
