@@ -5,14 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <title>Memory Lane - Final</title>
 <link rel="stylesheet" href="./assets/css/index.css">
+
+<link rel="preload" href="./assets/images/mjay.png" as="image">
+<link rel="preload" href="./assets/images/mjay_walking_side_view.png" as="image">
+<link rel="preload" href="./assets/images/mjay_standing_side_view.png" as="image">
+<link rel="preload" href="./assets/images/makkunii.png" as="image">
+<link rel="preload" href="./assets/js/index.js" as="script">
+
+<style>
+/* Basic CSS for the loading screen fade-out effect */
+#loading-screen {
+    /* Ensure the loading bar transition is smooth */
+    transition: opacity 0.5s ease-out; 
+}
+#loading-bar {
+    transition: width 0.1s;
+}
+</style>
 </head>
 <body>
 
+<div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 2em; flex-direction: column;">
+    <p>Loading Memories...</p>
+    <div id="loading-progress" style="width: 200px; height: 5px; background: #333; margin-top: 20px;">
+        <div id="loading-bar" style="height: 100%; width: 0%; background: #0f0;"></div>
+    </div>
+</div>
 <div class="hint">Use joystick or A/D/← → to move • Spacebar/↑/W to jump</div>
 <div id="game-container">
 
   <div id="makkunii-pixel" style="position:absolute; width:100px; height:100px; bottom:120px; left:7800px; z-index:10;">
-    <img src="./assets/images/makkunii.png" style="width:100%; height:100%; image-rendering:pixelated;" />
+    <img src="./assets/images/makkunii.png" style="width:100%; height:100%; image-rendering:pixelated;" loading="lazy" />
   </div>
 
   <div id="star-field" class="parallax-layer"></div>
@@ -21,7 +44,6 @@
 
  <div id="player">
   <img id="mjay-pixel" src="./assets/images/mjay.png" />
-
 </div>
 
   <div id="ground"></div>
